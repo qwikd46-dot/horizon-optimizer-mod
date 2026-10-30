@@ -1,0 +1,39 @@
+name: Build Horizon Optimizer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build modded Horizon
+        run: |
+          git clone https://github.com/Professor-Evil/horizon-offline horizon-source
+          cd horizon-source
+          # Apply the mod bundle
+          git clone https://github.com/horizon-rust/horizon-mixins.git ../horizon-mixins
+          cd ../horizon-mixins
+          cargo build --locked -p horizon-mixins-cli
+          cd ../horizon-source
+          ../horizon-mixins/target/debug/horizon-mixins apply \
+            --workspace . \
+            --mods ../horizon-optimizer-mod/mixins/horizon_optimizer \
+            --out ./horizon-modded
+          cd ./horizon-modded
+          cargo build --release -p horizon-client --bin horizon-client
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: horizon-optimizer-binary
+          path: horizon-source/horizon-modded/target/release/horizon-client
+          if-no-files-found: error
