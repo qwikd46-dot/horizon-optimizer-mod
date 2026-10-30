@@ -1,0 +1,11 @@
+[package]
+name = "horizon-mod-horizon-optimizer"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+description = "Performance monitoring and optimization mod for Horizon: FPS counter, frame timing, tick stats, and optimization settings."
+
+# The mod's logic and its tests: the same file the bundle adds to the game.
+[lib]
+path = "mixins/horizon_optimizer/runtime.rs"
