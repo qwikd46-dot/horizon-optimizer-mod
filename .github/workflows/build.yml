@@ -33,15 +33,15 @@ jobs:
           ../horizon-mixins/target/debug/horizon-mixins apply \
             --workspace . \
             --mods ../mod-source/mixins/horizon_optimizer \
-            --out ./horizon-modded
-
+            --out ../horizon-modded
+          
           # Build the modded game
-          cd ./horizon-modded
+          cd ../horizon-modded
           cargo build --release -p horizon-client --bin horizon-client
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: horizon-optimizer-binary
-          path: horizon-source/horizon-modded/target/release/horizon-client
+          path: horizon-modded/target/release/horizon-client
           if-no-files-found: error
