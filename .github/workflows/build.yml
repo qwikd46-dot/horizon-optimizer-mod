@@ -9,25 +9,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout mod source
         uses: actions/checkout@v4
+        with:
+          path: mod-source
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
       - name: Build modded Horizon
         run: |
+          # Clone the source and mixins at the same level
           git clone https://github.com/qwikd46-dot/horizon-offline horizon-source
-          cd horizon-source
-          # Apply the mod bundle
-          git clone https://github.com/horizon-rust/horizon-mixins.git ../horizon-mixins
-          cd ../horizon-mixins
+          git clone https://github.com/horizon-rust/horizon-mixins.git horizon-mixins
+
+          # Build horizon-mixins first
+          cd horizon-mixins
           cargo build --locked -p horizon-mixins-cli
-          cd ../horizon-source
+          cd ..
+
+          # Apply the mod bundle to the source
+          cd horizon-source
           ../horizon-mixins/target/debug/horizon-mixins apply \
             --workspace . \
-            --mods ../horizon-optimizer-mod/mixins/horizon_optimizer \
+            --mods ../mod-source/mixins/horizon_optimizer \
             --out ./horizon-modded
+
+          # Build the modded game
           cd ./horizon-modded
           cargo build --release -p horizon-client --bin horizon-client
 
