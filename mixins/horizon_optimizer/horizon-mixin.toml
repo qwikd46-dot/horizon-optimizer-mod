@@ -5,7 +5,7 @@ priority = 100
 
 # Your edited Horizon source revision
 [compatibility]
-horizon_revision = "ecbf011c76199734046c1e6f86ba041e44bfaf7d"
+horizon_revision = "ecbf011c7619e4e1b72dbc64980f753fddaa2feb"
 
 [[module]]
 id = "runtime"

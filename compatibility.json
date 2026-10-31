@@ -2,7 +2,7 @@
   "game": "26.3",
   "hooks": 1,
   "horizon_repository": "https://github.com/qwikd46-dot/horizon-offline",
-  "horizon_revision": "ecbf011c76199734046c1e6f86ba041e44bfaf7d",
+  "horizon_revision": "ecbf011c7619e4e1b72dbc64980f753fddaa2feb",
   "horizon_mixins_repository": "https://github.com/horizon-rust/horizon-mixins",
   "horizon_mixins_revision": "0d6b103c70633d8fd9443d8d0acd3aadaacedb06"
 }
