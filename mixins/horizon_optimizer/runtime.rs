@@ -11,7 +11,7 @@ use std::time::Instant;
 
 pub const ID: &str = "horizon_optimizer";
 pub const NAME: &str = "Horizon Optimizer";
-pub const VERSION: &str = "0.3.0";
+pub const VERSION: &str = "0.4.0";
 pub const DESCRIPTION: &str = "Performance optimization: FPS counter (smoothed), frame timing, tick stats, chunk optimization settings.";
 
 // ---- Settings keys ----

@@ -1,11 +1,9 @@
 [mod]
 id = "horizon_optimizer"
-version = "0.3.0"
+version = "0.4.0"
 priority = 100
 
 # Your edited Horizon source revision
-[compatibility]
-horizon_revision = "ecbf011c7619e4e1b72dbc64980f753fddaa2feb"
 
 [[module]]
 id = "runtime"
