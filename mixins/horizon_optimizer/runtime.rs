@@ -18,6 +18,7 @@ pub const DESCRIPTION: &str = "Performance optimization: FPS counter (smoothed),
 const KEY_SHOW_FPS: &str = "show_fps";
 const KEY_SHOW_AVG_TIME: &str = "show_avg_time";
 const KEY_SHOW_LAST_TIME: &str = "show_last_time";
+const KEY_SHOW_TIMING: &str = "show_timing";
 const KEY_OPTIMIZE_TICKS: &str = "optimize_ticks";
 const KEY_OPTIMIZE_FRAMES: &str = "optimize_frames";
 const KEY_TARGET_FPS: &str = "target_fps";
@@ -26,12 +27,6 @@ const KEY_CHUNK_RENDER_DIST: &str = "chunk_render_dist";
 const KEY_CHUNK_LOD: &str = "chunk_lod";
 const KEY_CHUNK_PRELOAD: &str = "chunk_preload";
 const KEY_CHUNK_FAST: &str = "chunk_fast";
-// ---- Chunk/RSS settings ----
-const KEY_CHUNK_RENDER_DIST: &str = "chunk_render_dist";
-const KEY_CHUNK_LOD: &str = "chunk_lod";
-const KEY_CHUNK_PRELOAD: &str = "chunk_preload";
-const KEY_CHUNK_FAST: &str = "chunk_fast";
-
 // ---- Thread-local state ----
 
 thread_local! {
@@ -69,6 +64,10 @@ pub fn show_avg_time(get: impl Fn(&str) -> Option<String>) -> bool {
 }
 
 pub fn show_last_time(get: impl Fn(&str) -> Option<String>) -> bool {
+    get_bool(get, KEY_SHOW_LAST_TIME, true)
+}
+
+pub fn show_timing(get: impl Fn(&str) -> Option<String>) -> bool {
     get_bool(get, KEY_SHOW_LAST_TIME, true)
 }
 
