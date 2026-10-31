@@ -17,7 +17,7 @@ jobs:
 
       - name: Build modded Horizon
         run: |
-          git clone https://github.com/Professor-Evil/horizon-offline horizon-source
+          git clone https://github.com/qwikd46-dot/horizon-offline horizon-source
           cd horizon-source
           # Apply the mod bundle
           git clone https://github.com/horizon-rust/horizon-mixins.git ../horizon-mixins
