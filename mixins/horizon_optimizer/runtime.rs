@@ -11,7 +11,7 @@ use std::time::Instant;
 
 pub const ID: &str = "horizon_optimizer";
 pub const NAME: &str = "Horizon Optimizer";
-pub const VERSION: &str = "0.4.0";
+pub const VERSION: &str = "0.4.1";
 pub const DESCRIPTION: &str = "Performance optimization: FPS counter (smoothed), frame timing, tick stats, chunk optimization settings.";
 
 // ---- Settings keys ----
@@ -86,24 +86,6 @@ pub fn target_fps(get: impl Fn(&str) -> Option<String>) -> u32 {
 }
 
 // ---- Chunk optimization accessors ----
-pub fn chunk_render_dist(get: impl Fn(&str) -> Option<String>) -> u32 {
-    get(KEY_CHUNK_RENDER_DIST).and_then(|s| s.parse().ok()).unwrap_or(12)
-}
-
-pub fn chunk_lod(get: impl Fn(&str) -> Option<String>) -> bool {
-    get_bool(get, KEY_CHUNK_LOD, true)
-}
-
-pub fn chunk_preload(get: impl Fn(&str) -> Option<String>) -> bool {
-    get_bool(get, KEY_CHUNK_PRELOAD, true)
-}
-
-pub fn chunk_fast(get: impl Fn(&str) -> Option<String>) -> bool {
-    get_bool(get, KEY_CHUNK_FAST, true)
-}
-
-// ---- Chunk optimization accessors ----
-
 pub fn chunk_render_dist(get: impl Fn(&str) -> Option<String>) -> u32 {
     get(KEY_CHUNK_RENDER_DIST).and_then(|s| s.parse().ok()).unwrap_or(12)
 }
