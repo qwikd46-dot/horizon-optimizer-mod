@@ -93,3 +93,5 @@ bindings = [
   { name = "command", ty = "&str", value = "command" },
   { name = "ran", ty = "&mut bool", value = "&mut *ran" },
 ]
+[compatibility]
+horizon_revision = "ecbf011c7619e4e1b72dbc64980f753fddaa2feb"
