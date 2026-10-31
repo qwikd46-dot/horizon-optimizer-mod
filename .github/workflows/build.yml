@@ -34,6 +34,8 @@ jobs:
 
           # Apply the mod bundle to the source (output goes to a sibling, not inside workspace)
           cd horizon-source
+          # Remove symlinks that horizon-mixins doesn't support
+          find . -type l -delete
           ../horizon-mixins/target/debug/horizon-mixins apply \
             --workspace . \
             --mods /home/runner/work/horizon-optimizer-mod/horizon-optimizer-mod/mod-source/mixins/horizon_optimizer \
