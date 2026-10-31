@@ -1,5 +1,4 @@
 // Settings click hook: called when a settings button is clicked.
-// Toggles the corresponding setting.
 
 fn horizon_optimizer_click(game: &mut crate::game::Game<'_>, mod_id: &str, button: usize) {
     use crate::game::horizon_optimizer as m;
@@ -8,30 +7,31 @@ fn horizon_optimizer_click(game: &mut crate::game::Game<'_>, mod_id: &str, butto
         return;
     }
 
+    let set = |key: &str, val: &str| game.native_set_setting(m::ID, key, val);
+    let get = |key: &str| game.native_setting(m::ID, key);
+
     match button {
         0 => {
-            let get = |k: &str| game.native_setting(m::ID, k);
             let current = m::show_fps(get);
-            game.native_set_setting(m::ID, "show_fps", if current { "false" } else { "true" });
+            set("show_fps", if current { "false" } else { "true" });
         }
         1 => {
-            let get = |k: &str| game.native_setting(m::ID, k);
-            let current = m::show_timing(get);
-            game.native_set_setting(m::ID, "show_timing", if current { "false" } else { "true" });
+            let current = m::show_avg_time(get);
+            set("show_avg_time", if current { "false" } else { "true" });
         }
         2 => {
-            let get = |k: &str| game.native_setting(m::ID, k);
-            let current = m::optimize_ticks(get);
-            game.native_set_setting(m::ID, "optimize_ticks", if current { "false" } else { "true" });
+            let current = m::show_last_time(get);
+            set("show_last_time", if current { "false" } else { "true" });
         }
         3 => {
-            let get = |k: &str| game.native_setting(m::ID, k);
-            let current = m::optimize_frames(get);
-            game.native_set_setting(m::ID, "optimize_frames", if current { "false" } else { "true" });
+            let current = m::optimize_ticks(get);
+            set("optimize_ticks", if current { "false" } else { "true" });
         }
         4 => {
-            // Cycle through target FPS options
-            let get = |k: &str| game.native_setting(m::ID, k);
+            let current = m::optimize_frames(get);
+            set("optimize_frames", if current { "false" } else { "true" });
+        }
+        5 => {
             let current = m::target_fps(get);
             let next = match current {
                 0 => 60,
@@ -41,7 +41,19 @@ fn horizon_optimizer_click(game: &mut crate::game::Game<'_>, mod_id: &str, butto
                 240 => 0,
                 _ => 0,
             };
-            game.native_set_setting(m::ID, "target_fps", &next.to_string());
+            set("target_fps", &next.to_string());
+        }
+        6 => {
+            let current = m::chunk_lod(get);
+            set("chunk_lod", if current { "false" } else { "true" });
+        }
+        7 => {
+            let current = m::chunk_preload(get);
+            set("chunk_preload", if current { "false" } else { "true" });
+        }
+        8 => {
+            let current = m::chunk_fast(get);
+            set("chunk_fast", if current { "false" } else { "true" });
         }
         _ => {}
     }

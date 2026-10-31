@@ -1,5 +1,5 @@
 // HUD hook: called when the HUD is drawn (not under F1).
-// Draws the FPS counter, frame timing, and optimization overlay.
+// Draws the FPS counter (smoothed), frame timing, and optimization overlay.
 
 fn horizon_optimizer_hud(
     game: &mut crate::game::Game<'_>,
@@ -12,42 +12,46 @@ fn horizon_optimizer_hud(
     if !game.native_on(m::ID) {
         return;
     }
-
-    // Only show when playing
     if !game.native_playing() {
         return;
     }
-
-    // Only show on the window's game
     if !game.native_window() {
         return;
     }
 
     let get = |key: &str| game.native_setting(m::ID, key);
     let show_fps = m::show_fps(get);
-    let show_timing = m::show_timing(get);
+    let show_avg_time = m::show_avg_time(get);
+    let show_last_time = m::show_last_time(get);
 
-    if !show_fps && !show_timing {
+    if !show_fps && !show_avg_time && !show_last_time {
         return;
     }
 
-    // Build the text lines
     let mut lines: Vec<String> = Vec::new();
 
     if show_fps {
-        let fps = m::CURRENT_FPS.with(|c| c.get());
-        lines.push(m::format_fps(fps));
+        // Use smoothed FPS to prevent jitter
+        let fps = m::SMOOTH_FPS.with(|s| s.get());
+        if fps > 0 {
+            lines.push(m::format_fps(fps));
+        }
     }
 
-    if show_timing {
+    if show_avg_time {
         let avg = m::avg_frame_time();
-        lines.push(format!("§7Avg: {}§r", m::format_duration(avg)));
-
-        let last = m::LAST_FRAME_TIME.with(|t| t.get());
-        lines.push(format!("§7Last: {}§r", m::format_duration(last)));
+        if avg > 0 {
+            lines.push(format!("§7avg: {}§r", m::format_duration(avg)));
+        }
     }
 
-    // Place in top-right corner
+    if show_last_time {
+        let last = m::LAST_FRAME_TIME.with(|t| t.get());
+        if last > 0 {
+            lines.push(format!("§7last: {}§r", m::format_duration(last)));
+        }
+    }
+
     if !lines.is_empty() {
         let text = lines.join(" §7| ");
         let w = game.native_text_width(&text) + 4.0;
