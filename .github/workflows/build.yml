@@ -19,7 +19,11 @@ jobs:
 
       - name: Build modded Horizon
         run: |
-          # Clone the source and mixins at the same level
+          # Work entirely inside the repo directory
+          mkdir -p build
+          cd build
+
+          # Clone the source and mixins (both as siblings inside build/)
           git clone https://github.com/qwikd46-dot/horizon-offline horizon-source
           git clone https://github.com/horizon-rust/horizon-mixins.git horizon-mixins
 
@@ -28,20 +32,20 @@ jobs:
           cargo build --locked -p horizon-mixins-cli
           cd ..
 
-          # Apply the mod bundle to the source
+          # Apply the mod bundle to the source (output goes to a sibling, not inside workspace)
           cd horizon-source
           ../horizon-mixins/target/debug/horizon-mixins apply \
             --workspace . \
-            --mods ../mod-source/mixins/horizon_optimizer \
-            --out ../horizon-modded
-          
+            --mods /home/runner/work/horizon-optimizer-mod/horizon-optimizer-mod/mod-source/mixins/horizon_optimizer \
+            --out /home/runner/work/horizon-optimizer-mod/horizon-modded
+
           # Build the modded game
-          cd ../horizon-modded
+          cd /home/runner/work/horizon-optimizer-mod/horizon-modded
           cargo build --release -p horizon-client --bin horizon-client
 
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: horizon-optimizer-binary
-          path: horizon-modded/target/release/horizon-client
+          path: /home/runner/work/horizon-optimizer-mod/horizon-modded/target/release/horizon-client
           if-no-files-found: error
